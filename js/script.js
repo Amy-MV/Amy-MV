@@ -2,6 +2,7 @@
 
 const overview = document.querySelector(".overview");
 const username = "Amy-MV";
+const repoList = document.querySelector(".repo-list");
 
 //Fetch API JSON Data
 
@@ -30,4 +31,24 @@ const displayUserInfo = function (data) {
       </div> 
     `;
     overview.append(div);
+    gitRepos();
 };
+
+//Select the Repos List & Fetch Repos
+
+const gitRepos = async function () {
+    const fetchRepos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repoData = await fetchRepos.json();
+    displayRepos(repoData);
+};
+
+//Display Info About Your Repos
+
+const displayRepos = function (repos) {
+    for (const repo of repos) {
+      const repoItem = document.createElement("li");
+      repoItem.classList.add("repo");
+      repoItem.innerHTML = `<h3>${repo.name}</h3>`;
+      repoList.append(repoItem);
+    }
+  };
